@@ -10,8 +10,8 @@ class AdminController extends Controller
     public function index()
     {
         // paginate(25) ir lai lapa ieladetu tikai pirmos 25 lietotajus
-        $users = User::orderBy('created_at', 'asc')->paginate(25);
-        return view('admin', compact('users'));
+        $users = User::orderBy('created_at', 'desc')->paginate(25);
+        return view('admin.admin', compact('users'));
     }
 
     public function store(Request $request)
@@ -51,6 +51,39 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'User created successfully!');
     }
+
+    public function edit($id) {
+        $user = User::find($id);
+        return view("admin.edit", compact("user"));
+    }
+
+    public function update(Request $request, $id) {
+        $user = User::find($id);
+        if (!$user) {
+            return redirect()->back()->withErrors('User not found');
+        }
+
+        $validated = $request->validate([
+            'username' => 'required|string|unique:users,username,' . $user->id,
+            'full_name' => 'required|string',
+            'role' => 'required|in:analyst,admin,inspector,broker',
+            'active' => 'nullable|boolean',
+        ]);
+
+        $user->username = $validated['username'];
+        $user->full_name = $validated['full_name'];
+        $user->role = $validated['role'];
+        $user->active = $request->has('active') ? true : false;
+
+        $user->save();
+        
+        return redirect("/admin");
+    }
+
+    public function destroy($id) {
+        $user = User::find($id);
+        $user->delete();
+        return redirect("/admin");
+    }
+
 }
-
-

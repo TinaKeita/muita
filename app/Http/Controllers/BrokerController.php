@@ -8,7 +8,7 @@ class BrokerController extends Controller
 {
     public function index()
     {
-        $cases = CustomsCase::with('documents')->paginate(25); 
+        $cases = CustomsCase::with('documents')->orderBy('created_at', 'desc')->paginate(25);
         return view('broker', compact('cases'));
     }
 }
