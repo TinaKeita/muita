@@ -29,7 +29,7 @@ class AdminController extends Controller
 
         if ($lastUser) {
             $lastNumber = (int)substr($lastUser->id, 4);
-            $newNumber = $lastNumber + 1;
+            $newNumber = $lastNumbe + 1 ;
         } else {
             $newNumber = 1; 
         }
