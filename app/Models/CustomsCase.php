@@ -28,9 +28,13 @@ class CustomsCase extends Model
         'vehicle_id',
     ];
 
-public function documents()
-    {
-        // pieliek speciāli case_id kā ārējo atslēgu
-        return $this->hasMany(Document::class, 'case_id');
-    }
+    public function documents()
+        {
+            // pieliek speciāli case_id kā ārējo atslēgu
+            return $this->hasMany(Document::class, 'case_id');
+        }
+
+    protected $casts = [
+    'risk_flags' => 'array',
+];
 }
