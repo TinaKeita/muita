@@ -3,77 +3,75 @@ namespace App\Services;
 
 use App\Models\CustomsCase;
 use App\Models\Inspection;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;  
 
 class RiskAnalysisService
 {
     public function calculate(CustomsCase $case)
     {
-        $points = 0;
+        $points = 1;
 
-        if ($case->hs_code) {
-            if (str_starts_with($case->hs_code, '93')) {
-                $points += 5;
-            } elseif (str_starts_with($case->hs_code, '27')) {
-                $points += 3;
-            }
-        }
-
-        /*
-        | Maršruts
-        */
+        /* Maršruts */
         if (in_array($case->origin_country, ['RU', 'BY', 'UA'])) {
             $points += 3;
         }
 
-        /*
-        | Kravas vērtība (demo)
-        */
-        if ($case->cargo_value && $case->cargo_value > 100000) {
-            $points += 2;
-        }
-
-        /*
-        | Iepriekšēji pārkāpumi
-        */
+        /* Iepriekšēji pārkāpumi */
         if (!empty($case->risk_flags)) {
-            $points += 4;
+            foreach ($case->risk_flags as $flag) {
+                $points += 1; 
+            }
         }
 
-        /*
-        | Riska līmenis
-        */
-        if ($points >= 10) {
+        /* Riska līmenis */
+        if ($points >= 5) {
             $riskLevel = 'high';
-        } elseif ($points >= 7) {
+        } elseif ($points >= 3) {
             $riskLevel = 'medium';
         } else {
             $riskLevel = 'low';
         }
 
-        /*
-        | Saglabā risku
-        */
+        /* Saglabā risku */
         $case->risk_score = $points;
         $case->risk_level = $riskLevel;
         $case->save();
 
-        /*
-        | Automatizēta inspection izveide
-        */
-        if ($riskLevel == 'high') {
-            Inspection::create([
-                'id' => Inspection::generateId(),
-                'case_id' => $case->id,
-                'type' => 'document',
-                'requested_by' => 'system',
-                'start_ts' => now()->toISOString(),
-                'checks' => [
-                    ['name' => 'Dokumentu pārbaude', 'result' => 'pending']
-                ]
-            ]);
+        /* Automatizēta inspection izveide */
+        if ($riskLevel === 'high') {
+            $this->createAutoInspection($case);
 
-            $case->status = 'screening';
-            $case->save();
         }
     }
+
+   private function createAutoInspection(CustomsCase $case)
+        {
+            $inspectionId = 'insp-' . str_pad(Inspection::count() + 1, 6, '0', STR_PAD_LEFT);
+            
+            // Random type
+            $types = ['document', 'xray', 'physical'];
+            $type = $types[rand(0, 2)];
+            
+            // Random inspector
+            $inspectors = DB::table('users')->where('role', 'inspector')->pluck('username')->toArray();
+            $inspector = $inspectors[rand(0, count($inspectors)-1)] ?? 'unassigned';
+            
+            $checks = [
+                ['name' => 'Pārbaude 1', 'result' => 'pending'],
+                ['name' => 'Pārbaude 2', 'result' => 'pending']
+            ];
+            
+            Inspection::create([
+                'id' => $inspectionId,
+                'case_id' => $case->id,
+                'type' => $type,
+                'requested_by' => 'risk-engine',
+                'start_ts' => now(),
+                'location' => 'RIX-CP-01',
+                'checks' => $checks,
+                'assigned_to' => $inspector,
+            ]);
+        }
+
 }

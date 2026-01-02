@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Inspections extends Model
+class Inspection extends Model
 {
     use HasFactory;
 
@@ -27,11 +27,15 @@ class Inspections extends Model
         'checks' => 'array',
     ];
     
-    public function case() {
-        return $this->belongsTo(CaseModel::class, 'case_id');
-    }
+   public function case() {
+    return $this->belongsTo(CustomsCase::class, 'case_id');
+}
 
     public function inspector() {
         return $this->belongsTo(User::class, 'assigned_to');
     }
+    protected $attributes = [
+    'assigned_to' => 'unassigned',
+    ];
+
 }
