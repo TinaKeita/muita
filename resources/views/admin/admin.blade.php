@@ -1,5 +1,5 @@
 <x-layout>
-    <header class="bg-white shadow p-4 border-b border-gray-200 font-semibold text-gray-900">
+    <header class="bg-white shadow p-4 border-b border-gray-200 font-semibold text-gray-900 pl-32">
         User Management 
     </header>
 
@@ -16,7 +16,7 @@
                         class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
 
                     <select name="role" id="role"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="analyst">Analyst</option>
                         <option value="admin">Admin</option>
                         <option value="inspector">Inspector</option>
@@ -59,7 +59,7 @@
                                 <form method="POST" action="/admin/{{ $user->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button>Dzēst</button>
+                                    <button>Delete</button>
                                 </form>
                             </td>
                         </tr>

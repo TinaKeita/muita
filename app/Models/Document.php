@@ -26,4 +26,16 @@ class Document extends Model
         {
             return $this->belongsTo(CustomsCase::class);
         }
+    public static function generateId()
+    {
+        $last = self::orderBy('id', 'desc')->first();
+
+        if (!$last) {
+            return 'doc-000001';
+        }
+
+        $num = intval(substr($last->id, 4)) + 1;
+        return 'doc-' . str_pad($num, 6, '0', STR_PAD_LEFT);
+    }
+
 }

@@ -8,27 +8,40 @@ use App\Http\Controllers\InspectorController;
 
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('guest')->group(function () {
+     Route::get('/', function () {
+          return view('auth.login');
+     });
 });
 
+
 // admin
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
-Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
-Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
-Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+     Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
+     Route::get('/admin/edit/{id}', [AdminController::class, 'edit'])->name('admin.edit');
+     Route::put('/admin/{id}', [AdminController::class, 'update'])->name('admin.update');
+     Route::delete('/admin/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
+ 
+});
 
 // broker
-Route::get('/broker', [BrokerController::class, 'index'])->name('broker.index');
+Route::middleware(['auth', 'role:broker'])->group(function () {
+    Route::get('/broker', [BrokerController::class, 'index'])->name('broker.index');
+    Route::post('/documents/upload', [BrokerController::class, 'storeDocument'])->name('documents.upload');
+});
 
 // analyst
-Route::get('/analyst/cases', [AnalystController::class, 'index'])->name('analyst.cases');
-Route::post('/analyst/risk/{id}', [AnalystController::class, 'runRisk'])->name('analyst.risk');
+Route::middleware(['auth', 'role:analyst'])->group(function () {
+     Route::get('/analyst/cases', [AnalystController::class, 'index'])->name('analyst.cases');
+     Route::post('/analyst/risk/{id}', [AnalystController::class, 'runRisk'])->name('analyst.risk');
+});
 
 // inspector
-Route::get('/inspector', [InspectorController::class, 'index']);
-Route::get('/inspector/case/{case}', [InspectorController::class, 'show']);
-Route::post('/inspector/decision/{id}', [InspectorController::class, 'decision']);
+Route::middleware(['auth', 'role:inspector'])->group(function () {
+     Route::get('/inspector', [InspectorController::class, 'index']);
+     Route::get('/inspector/case/{case}', [InspectorController::class, 'show']);
+     Route::post('/inspector/decision/{id}', [InspectorController::class, 'decision']);
+});
 
 require __DIR__.'/auth.php';

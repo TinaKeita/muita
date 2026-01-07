@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
         return match ($user->role) {
             'analyst'   => redirect('/analyst/cases'),
             'inspector' => redirect('/inspector'),
-            'broker'    => redirect('/broker/cases'),
+            'broker'    => redirect('/broker'),
             'admin'     => redirect('/admin'),
             default     => redirect('/dashboard'),
         };

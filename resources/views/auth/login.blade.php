@@ -11,7 +11,7 @@
             <x-text-input id="username" name="username" type="text" required autofocus />
 
         </div>
-
+ 
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
