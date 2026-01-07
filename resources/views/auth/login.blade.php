@@ -5,10 +5,11 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
+        <!-- Username -->
         <div>
             <x-input-label for="username" :value="__('Username')" />
             <x-text-input id="username" name="username" type="text" required autofocus />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
 
         </div>
  
