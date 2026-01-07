@@ -52,7 +52,7 @@
 
                     <!-- iesniegt -->
                     <div class="md:col-span-2">
-                        <button class="bg-blue-400 text-black px-4 py-2 rounded hover:bg-blue-700">
+                        <button class="bg-yellow-300 text-black px-4 py-2 rounded hover:bg-yellow-400">
                             Upload
                         </button>
                     </div>

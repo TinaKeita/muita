@@ -1,11 +1,9 @@
 <header class="bg-slate-900">
     <nav class="max-w-7xl mx-auto flex items-center justify-between px-2 py-3">
-        <span class="text-sm font-semibold tracking-wide text-white">
-                <h3>
-                    Welcome,
-                     {{ auth()->user()->username }} :  {{ auth()->user()->role }}
-                </h3>
-        </span>
+
+    <h2 class="text-sm text-sm font-semibold tracking-wide text-white">
+        Welcome, {{ auth()->user()->username }} : {{ auth()->user()->role }}
+    </h2>
 
         @auth
             <div class="flex items-center gap-3">

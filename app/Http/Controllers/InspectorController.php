@@ -37,7 +37,7 @@ class InspectorController extends Controller
         $case->status = $decisions[$request->decision];
         $case->save();
 
-        // Flash a simple message
+        // message prieks redirect
         return redirect('/inspector')
             ->with('status', "Case {$case->id} status changed to {$case->status}!");
     }
