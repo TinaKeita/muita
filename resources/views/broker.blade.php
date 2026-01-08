@@ -52,14 +52,41 @@
 
                     <!-- iesniegt -->
                     <div class="md:col-span-2">
-                        <button class="bg-yellow-300 text-black px-4 py-2 rounded hover:bg-yellow-400">
+                        <button class="bg-yellow-100 text-black px-4 py-2 rounded hover:bg-yellow-200">
                             Upload
                         </button>
                     </div>
                 </form>
             </div>
 
+            {{-- meklēšanas forma --}}
+            <form method="GET" action="/broker" class="bg-white p-4 rounded-lg shadow mb-6 flex space-x-4 items-center">
+                <p>Search Cases:</p>
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Search case id..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
 
+                <select name="status" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <option value="">All status</option>
+                    <option value="new" {{ request('status')=='new'?'selected':'' }}>New</option>
+                    <option value="in_inspection" {{ request('status')=='in_inspection'?'selected':'' }}>In Inspection</option>
+                    <option value="on_hold" {{ request('status')=='on_hold'?'selected':'' }}>On Hold</option>
+                    <option value="screening" {{ request('status')=='screening'?'selected':'' }}>Screening</option>
+                    <option value="released" {{ request('status')=='released'?'selected':'' }}>Released</option>
+                    <option value="closed" {{ request('status')=='closed'?'selected':'' }}>Closed</option>
+                </select>
+
+                <select name="priority" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <option value="">All priorities</option>
+                    <option value="low" {{ request('priority')=='low'?'selected':'' }}>Low</option>
+                    <option value="normal" {{ request('priority')=='normal'?'selected':'' }}>Normal</option>
+                    <option value="high" {{ request('priority')=='high'?'selected':'' }}>High</option>
+                </select>
+
+                <button class="px-5 py-2 bg-yellow-100 text-black rounded-md hover:bg-yellow-200">
+                    Search
+                </button>
+            </form>
             <!-- Cases table -->
             <div class="relative overflow-x-auto bg-white shadow rounded-lg border border-gray-200 mb-10">
                 <table class="w-full text-sm text-left text-gray-700 table-auto">

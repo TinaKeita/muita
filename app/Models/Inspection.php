@@ -27,9 +27,9 @@ class Inspection extends Model
         'checks' => 'array',
     ];
     
-   public function case() {
-    return $this->belongsTo(CustomsCase::class, 'case_id');
-}
+    public function case() {
+        return $this->belongsTo(CustomsCase::class, 'case_id');
+    }
 
     public function inspector() {
         return $this->belongsTo(User::class, 'assigned_to');

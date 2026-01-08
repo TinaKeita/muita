@@ -18,7 +18,7 @@
             </div>
         </div>
         
-
+        
         {{-- tabulas konteineris --}}
         <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
             <div class="overflow-x-auto">

@@ -4,7 +4,7 @@
     </header>
 
     <main class="flex-grow max-w-7xl mx-auto p-6 w-full">
-
+        {{-- pievienot lietotaju --}}
         <form method="POST" action="/admin" class="bg-white p-6 rounded-lg shadow-md mb-8 max-w-full">
              <p>Add new user</p><br>
                 @csrf
@@ -33,6 +33,27 @@
                 </div>
             </form>
 
+        {{-- meklēšanas forma --}}
+            <form method="GET" action="/admin" class="bg-white p-4 rounded-lg shadow mb-6 flex space-x-4 items-center">
+                <p>Search Users:</p>
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Search username or name..."
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+
+                <select name="role" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <option value="">All roles</option>
+                    <option value="admin" {{ request('role')=='admin'?'selected':'' }}>Admin</option>
+                    <option value="analyst" {{ request('role')=='analyst'?'selected':'' }}>Analyst</option>
+                    <option value="inspector" {{ request('role')=='inspector'?'selected':'' }}>Inspector</option>
+                    <option value="broker" {{ request('role')=='broker'?'selected':'' }}>Broker</option>
+                </select>
+
+                <button class="px-5 py-2 bg-yellow-100 text-black rounded-md hover:bg-yellow-200">
+                    Search
+                </button>
+            </form>
+
+        {{-- lietotaju tabula --}}
         <div class="relative overflow-x-auto bg-white shadow rounded-lg border border-gray-200 mb-10">
             <table class="w-full text-sm text-left text-gray-700 table-auto">
                 <thead class="bg-gray-100 text-gray-900 font-semibold border-b border-gray-300">
@@ -55,7 +76,7 @@
 
                             <td class="px-6 py-4 align-middle whitespace-nowrap font-medium">{{ $user->active ? 'Yes' : 'No' }}</td>
                             <td class="px-6 py-4 align-middle whitespace-nowrap font-medium">
-                                <a href="/admin/edit/{{ $user->id }}" class="text-blue-600 hover:underline">Edit</a>
+                                <a href="/admin/edit/{{ $user->id }}" class="text-yellow-600 hover:underline">Edit</a>
                                 <form method="POST" action="/admin/{{ $user->id }}">
                                     @csrf
                                     @method('DELETE')

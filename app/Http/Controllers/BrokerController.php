@@ -7,9 +7,27 @@ use App\Models\Document;
 
 class BrokerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cases = CustomsCase::with('documents')->orderBy('created_at', 'desc')->paginate(25);
+        $query = CustomsCase::with('documents')->orderBy('created_at', 'desc');
+                
+        // Search
+        if ($request->search) {
+            $query->where('id', 'like', '%' . $request->search . '%');
+        }
+
+        // filtret pec satus
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // filtret pec prioritatem
+        if ($request->priority) {
+            $query->where('priority', $request->priority);
+        }
+
+        $cases = $query->paginate(25);
+        
         return view('broker', compact('cases'));
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Inspection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,17 +8,31 @@ use Illuminate\Support\Facades\Auth;
 
 class InspectorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $inspectorId = Auth::user()->username;
 
-        $inspections = Inspection::where('assigned_to', $inspectorId)
+        $query = Inspection::where('assigned_to', $inspectorId)
             ->whereHas('case', function ($query) {
                 $query->whereNotIn('status', ['released', 'closed']);
             })
-            ->with('case')
-            ->get();
+            ->with('case');
 
+
+        // filtret pec satus
+        if ($request->type) {
+            $query->where('type', $request->type);
+        }
+
+        // filtret pec prioritatem
+        if ($request->priority) {
+            $query->whereHas('case', function ($q) use ($request) {
+                $q->where('priority', $request->priority);
+            });
+        }
+
+
+        $inspections = $query->paginate(25);
         return view('inspector.index', compact('inspections'));
     }
 

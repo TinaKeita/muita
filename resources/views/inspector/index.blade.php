@@ -13,10 +13,33 @@
     @endif
 
     <!-- Header -->
-    <header class="bg-white shadow p-4 border-b border-gray-200 font-semibold text-gray-900 pl-32">
+    <header class="bg-white shadow p-4 border-b border-gray-200 font-semibold text-gray-900 pl-34">
         Assigned Inspections
     </header>
 
+     {{-- meklēšanas forma --}}
+        <form method="GET" action="/inspector" class="bg-white p-4 rounded-lg shadow mb-6 flex space-x-4 items-center pl-120">
+            <p>Search Inspections:</p>
+
+            <select name="type" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                <option value="">All types</option>
+                <option value="xray" {{ request('type')=='xray'?'selected':'' }}>X-Ray</option>
+                <option value="physical" {{ request('type')=='physical'?'selected':'' }}>Physical</option>
+                <option value="document" {{ request('type')=='document'?'selected':'' }}>Document</option>
+            </select>
+
+            <select name="priority" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500">
+                <option value="">All priorities</option>
+                <option value="low" {{ request('priority')=='low'?'selected':'' }}>Low</option>
+                <option value="normal" {{ request('priority')=='normal'?'selected':'' }}>Normal</option>
+                <option value="high" {{ request('priority')=='high'?'selected':'' }}>High</option>
+            </select>
+
+            <button class="px-5 py-2 bg-yellow-100 text-black rounded-md hover:bg-yellow-200">
+                Search
+            </button>
+        </form>
+        
     <!-- galvenais -->
     <main class="flex-grow max-w-8xl mx-auto p-6 w-full">
 

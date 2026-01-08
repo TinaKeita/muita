@@ -4,15 +4,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+
 class AdminController extends Controller
 
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        // paginate(25) ir lai lapa ieladetu tikai pirmos 25 lietotajus
-        $users = User::orderBy('created_at', 'desc')->paginate(25);
+        $query = User::orderBy('created_at', 'desc');
+
+        // Search
+        if ($request->search) {
+            $query->where('username', 'like', '%' . $request->search . '%')
+                ->orWhere('full_name', 'like', '%' . $request->search . '%');
+        }
+
+        // filtret ar role 
+        if ($request->role) {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->paginate(25);
+
         return view('admin.admin', compact('users'));
     }
+
 
     public function store(Request $request)
     {
