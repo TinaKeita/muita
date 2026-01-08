@@ -11,6 +11,7 @@ class AnalystController extends Controller
 {
     public function index()
     {
+        
         $cases = CustomsCase::paginate(25);
         return view('analyst.cases', compact('cases'));
     }

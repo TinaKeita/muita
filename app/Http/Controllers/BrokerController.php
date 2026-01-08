@@ -33,26 +33,36 @@ class BrokerController extends Controller
 
 
 
-public function storeDocument(Request $request)
-{
-    $request->validate([
-        'case_id' => 'required',
-        'filename' => 'required',
-        'category' => 'required',
-        'pages' => 'required|integer',
-    ]);
+    public function storeDocument(Request $request)
+    {
+        $request->validate([
+            'case_id' => 'required',
+            'filename' => 'required',
+            'category' => 'required',
+            'pages' => 'required|integer',
+        ]);
 
-    Document::create([
-        'id' => Document::generateId(),
-        'case_id' => $request->case_id,
-        'filename' => $request->filename,
-        'mime_type' => 'application/pdf',
-        'category' => $request->category,
-        'pages' => $request->pages,
-        'uploaded_by' => auth()->user()->username,   
-    ]);
+        Document::create([
+            'id' => Document::generateId(),
+            'case_id' => $request->case_id,
+            'filename' => $request->filename,
+            'mime_type' => 'application/pdf',
+            'category' => $request->category,
+            'pages' => $request->pages,
+            'uploaded_by' => auth()->user()->username,   
+        ]);
 
-    return back()->with('success', 'Document uploaded!');
-}
+        return back()->with('success', 'Document uploaded!');
+    }
+
+    public function showDocument($id)
+    {
+        $document = \App\Models\Document::findOrFail($id);
+
+        return view('broker_document', compact('document')); 
+    }
+
+
+
 
 }

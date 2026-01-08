@@ -108,7 +108,12 @@
                                     @if ($case->documents->count())
                                         <ul class="list-disc list-inside text-xs text-gray-600">
                                             @foreach ($case->documents as $document)
-                                                <li>{{ $document->filename }}</li>
+                                                <li>
+                                                    <a href="{{ route('broker.document.show', $document->id) }}"
+                                                    class="text-blue-600 hover:underline">
+                                                        {{ $document->filename }}
+                                                    </a>
+                                                </li>
                                             @endforeach
                                         </ul>
                                     @else

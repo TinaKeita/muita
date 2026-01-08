@@ -2,7 +2,7 @@
     <nav class="max-w-7xl mx-auto flex items-center justify-between px-2 py-3">
 
     <h2 class="text-sm text-sm font-semibold tracking-wide text-white">
-        Welcome, {{ auth()->user()->username }} : {{ auth()->user()->role }}
+        Welcome, {{ auth()->user()->full_name }} : {{ auth()->user()->username }}, {{ auth()->user()->role }}
     </h2>
 
         @auth
