@@ -87,7 +87,7 @@
                     Search
                 </button>
             </form>
-            <!-- Cases table -->
+            <!-- Cases tabula -->
             <div class="relative overflow-x-auto bg-white shadow rounded-lg border border-gray-200 mb-10">
                 <table class="w-full text-sm text-left text-gray-700 table-auto">
                     <thead class="bg-gray-100 text-gray-900 font-semibold border-b border-gray-300">
@@ -104,6 +104,7 @@
                                 <td class="px-6 py-4 align-middle whitespace-nowrap font-medium">{{ $case->id }}</td>
                                 <td class="px-6 py-4 align-middle whitespace-nowrap">{{ $case->status }}</td>
                                 <td class="px-6 py-4 align-middle whitespace-nowrap">{{ $case->priority }}</td>
+                                {{-- dokumenti ir clickable --}}
                                 <td class="px-6 py-4 align-middle whitespace-nowrap">
                                     @if ($case->documents->count())
                                         <ul class="list-disc list-inside text-xs text-gray-600">

@@ -29,8 +29,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:broker'])->group(function () {
     Route::get('/broker', [BrokerController::class, 'index'])->name('broker.index');
     Route::post('/documents/upload', [BrokerController::class, 'storeDocument'])->name('documents.upload');
-    Route::get('/broker/document/{id}', [BrokerController::class, 'showDocument'])
-     ->name('broker.document.show');
+    Route::get('/broker/document/{id}', [BrokerController::class, 'showDocument'])->name('broker.document.show');
 });
 
 // analyst
